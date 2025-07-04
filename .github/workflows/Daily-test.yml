@@ -1,19 +1,14 @@
 name: Daily Test Run  # ✅ Workflow 的名稱，出現在 GitHub Actions 頁面上
 
-# on:
-#   schedule:  # ⏰ 使用排程觸發 workflow
-#     - cron: '0 2 * * *'  # 🌐 每天 UTC 時間 02:00（台灣時間上午10:00）執行
-#                          # 格式為：分 時 日 月 星期（Cron語法）
-#                          # 可用工具轉換：https://crontab.guru/
-
-  # push 觸發（可選）
-  # push:
-  #   branches: [main]  # 當 main 分支有新 push 就執行（你可以先用這段測試）
-
 on:
-  push:
+  workflow_dispatch:      # 👉 手動觸發（Actions 頁面點「Run workflow」）
+
+  push:                   # 👉 當你有檔案更新（例如 YAML 檔）就觸發
     paths:
-      - '.github/workflows/*.yaml'  # 🛠️ 只要 workflows 資料夾下的 YAML 檔有更新就觸發
+      - '.github/workflows/*.yml'
+
+  schedule:               # 👉 每天早上台灣時間 8:30 自動執行
+    - cron: '30 0 * * *'  # UTC 時間 00:30 = 台灣時間 08:30
 
 jobs:
   run-test:  # 🧪 Job 名稱（你可以命名為其他用途，例如 run-stock-monitor）
