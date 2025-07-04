@@ -24,7 +24,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # 組報表檔案名稱
-report_file = args.report or f"reports/test_report_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.html"
+report_file = args.report or f"reports/test_report_{datetime.now().strftime('%Y-%m-%d_%H')}.html"
 
 # 組裝 pytest 指令
 cmd = ["pytest", "--html=" + report_file, "--self-contained-html"]
