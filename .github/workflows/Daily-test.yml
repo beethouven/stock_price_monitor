@@ -30,11 +30,16 @@ jobs:
       - name: Run test and generate report
         run: python run_test.py  # 🚀 執行你的主腳本，產生報告與紀錄
 
+      - name: Set timestamp variable
+        id: vars
+        run: echo "REPORT_PATH=reports/test_report_$(date +'%Y-%m-%d_%H-%M-%S').html" >> $GITHUB_ENV
+
       - name: Upload HTML report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: test-report  # 📄 artifact 名稱
-          path: reports/latest_report.html  # 📁 要上傳的報告路徑（你可以用 timestamp 版也行）
+          name: test-report
+          path: ${{ env.REPORT_PATH }}
+          # 📄 artifact 名稱與路徑，使用環境變數來動態設定
 
       - name: Send report via email
         uses: dawidd6/action-send-mail@v3  # 📧 使用第三方 mail action 套件寄出報告
