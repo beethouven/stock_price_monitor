@@ -1,14 +1,19 @@
 name: Daily Test Run  # ✅ Workflow 的名稱，出現在 GitHub Actions 頁面上
 
-on:
-  schedule:  # ⏰ 使用排程觸發 workflow
-    - cron: '0 2 * * *'  # 🌐 每天 UTC 時間 02:00（台灣時間上午10:00）執行
-                         # 格式為：分 時 日 月 星期（Cron語法）
-                         # 可用工具轉換：https://crontab.guru/
+# on:
+#   schedule:  # ⏰ 使用排程觸發 workflow
+#     - cron: '0 2 * * *'  # 🌐 每天 UTC 時間 02:00（台灣時間上午10:00）執行
+#                          # 格式為：分 時 日 月 星期（Cron語法）
+#                          # 可用工具轉換：https://crontab.guru/
 
   # push 觸發（可選）
   # push:
   #   branches: [main]  # 當 main 分支有新 push 就執行（你可以先用這段測試）
+
+on:
+  push:
+    paths:
+      - '.github/workflows/*.yaml'  # 🛠️ 只要 workflows 資料夾下的 YAML 檔有更新就觸發
 
 jobs:
   run-test:  # 🧪 Job 名稱（你可以命名為其他用途，例如 run-stock-monitor）
@@ -28,7 +33,7 @@ jobs:
         run: pip install -r requirements.txt  # 📥 安裝套件（你在 requirements.txt 裡定義）
 
       - name: Run test and generate report
-        run: python runtest.py  # 🚀 執行你的主腳本，產生報告與紀錄
+        run: python run_test.py  # 🚀 執行你的主腳本，產生報告與紀錄
 
       - name: Upload HTML report as artifact
         uses: actions/upload-artifact@v4
@@ -44,8 +49,8 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}  # 👤 登入帳號（從 Secrets 讀取）
           password: ${{ secrets.EMAIL_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
           subject: Daily Test Report  # 📌 信件主題
-          to: your@email.com  # 📥 收件人信箱
-          from: sender@email.com  # 📤 寄件人信箱（可與 username 一致）
+          to: ${{ secrets.EMAIL_USERNAME }}  # 📥 收件人信箱
+          from: ${{ secrets.EMAIL_USERNAME }}  # 📤 寄件人信箱（可與 username 一致）
           body: "請參閱今日測試報告，HTML 檔案已附加。"  # 📄 信件內容
           attachments: reports/latest_report.html  # 📎 附加報告檔案
 
