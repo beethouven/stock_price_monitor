@@ -47,7 +47,7 @@ jobs:
           server_address: smtp.gmail.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
           server_port: 587  # 🔐 通常使用 587 或 465（依服務而定）
           username: ${{ secrets.EMAIL_USERNAME }}  # 👤 登入帳號（從 Secrets 讀取）
-          password: ${{ secrets.EMAIL_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
           subject: Daily Test Report  # 📌 信件主題
           to: ${{ secrets.EMAIL_USERNAME }}  # 📥 收件人信箱
           from: ${{ secrets.EMAIL_USERNAME }}  # 📤 寄件人信箱（可與 username 一致）
