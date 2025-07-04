@@ -3,11 +3,15 @@
 # =======================
 __pycache__/         # Python 執行後產生的快取目錄
 *.py[cod]            # Python 的中間編譯檔案（.pyc、.pyo、.pyd）
+tests/__pycache__/    # 測試目錄下的 Python 快取目錄
+src/__pycache__/     # 程式碼目錄下的 Python 快取目錄
+*.pyc               # 測試目錄下的 Python 中間編譯檔案
 
 # ===================
 # pytest 測試暫存與報表
 # ===================
 .pytest_cache/       # pytest 快取資料夾（儲存前次測試資訊）
 *.log                # 測試或執行過程產生的 log 檔
+log/                 # 測試或執行過程產生的 log 目錄
 reports/             # pytest-html 產出的測試報表（每次執行自動產生）
 *.html               # （可選）避免誤 commit 自動產出但未追蹤的 .html

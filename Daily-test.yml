@@ -1,0 +1,58 @@
+name: Daily Test Run  # ✅ Workflow 的名稱，出現在 GitHub Actions 頁面上
+
+on:
+  schedule:  # ⏰ 使用排程觸發 workflow
+    - cron: '0 2 * * *'  # 🌐 每天 UTC 時間 02:00（台灣時間上午10:00）執行
+                         # 格式為：分 時 日 月 星期（Cron語法）
+                         # 可用工具轉換：https://crontab.guru/
+
+  # push 觸發（可選）
+  # push:
+  #   branches: [main]  # 當 main 分支有新 push 就執行（你可以先用這段測試）
+
+jobs:
+  run-test:  # 🧪 Job 名稱（你可以命名為其他用途，例如 run-stock-monitor）
+
+    runs-on: ubuntu-latest  # 🖥 使用 GitHub 提供的 Ubuntu Runner 來執行任務
+
+    steps:  # 🪜 每個步驟依序執行
+      - name: Checkout repository
+        uses: actions/checkout@v3  # 📦 取得目前 repo 的程式碼，準備執行
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # 🐍 設定使用的 Python 版本為 3.10
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # 📥 安裝套件（你在 requirements.txt 裡定義）
+
+      - name: Run test and generate report
+        run: python runtest.py  # 🚀 執行你的主腳本，產生報告與紀錄
+
+      - name: Upload HTML report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report  # 📄 artifact 名稱
+          path: reports/latest_report.html  # 📁 要上傳的報告路徑（你可以用 timestamp 版也行）
+
+      - name: Send report via email
+        uses: dawidd6/action-send-mail@v3  # 📧 使用第三方 mail action 套件寄出報告
+        with:
+          server_address: smtp.example.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
+          server_port: 587  # 🔐 通常使用 587 或 465（依服務而定）
+          username: ${{ secrets.EMAIL_USERNAME }}  # 👤 登入帳號（從 Secrets 讀取）
+          password: ${{ secrets.EMAIL_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
+          subject: Daily Test Report  # 📌 信件主題
+          to: your@email.com  # 📥 收件人信箱
+          from: sender@email.com  # 📤 寄件人信箱（可與 username 一致）
+          body: "請參閱今日測試報告，HTML 檔案已附加。"  # 📄 信件內容
+          attachments: reports/latest_report.html  # 📎 附加報告檔案
+
+      # 目前不支援 LINE Notify 的直接寄送
+      # 如果需要，可以使用 curl 或其他工具來實現
+      # - name: Send LINE Notify
+      #   run: |
+      #     curl -X POST https://notify-api.line.me/api/notify \
+      #       -H "Authorization: Bearer ${{ secrets.LINE_NOTIFY_TOKEN }}" \
+      #       -F "message=✅ 測試完成！報告已寄出，請查看你的信箱。"  # 🔔 傳送通知訊息到 LINE
