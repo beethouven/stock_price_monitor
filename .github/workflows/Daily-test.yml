@@ -44,7 +44,7 @@ jobs:
       - name: Send report via email
         uses: dawidd6/action-send-mail@v3  # 📧 使用第三方 mail action 套件寄出報告
         with:
-          server_address: smtp.google.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
+          server_address: smtp.gmail.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
           server_port: 587  # 🔐 通常使用 587 或 465（依服務而定）
           username: ${{ secrets.EMAIL_USERNAME }}  # 👤 登入帳號（從 Secrets 讀取）
           password: ${{ secrets.EMAIL_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
