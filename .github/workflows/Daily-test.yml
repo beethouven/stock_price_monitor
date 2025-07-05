@@ -56,7 +56,7 @@ jobs:
           attachments: ${{ env.REPORT_PATH }}  # 📎 附加報告檔案
 
       - name: 上傳測試報告
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: reports/test_report_*.html
