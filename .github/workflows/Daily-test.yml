@@ -61,18 +61,6 @@ jobs:
           name: test-report-${{ github.run_id }}
           path: reports/test_report_*.html
 
-      - name: 留言報告連結
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: 1,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "✅ 測試完成！[報告下載點](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})"
-            });
-
-
       # 目前不支援 LINE Notify 的直接寄送
       # 如果需要，可以使用 curl 或其他工具來實現
       # - name: Send LINE Notify

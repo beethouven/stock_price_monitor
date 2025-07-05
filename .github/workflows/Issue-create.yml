@@ -1,0 +1,24 @@
+name: Issue create  # ✅ Workflow 的名稱，出現在 GitHub Actions 頁面上
+
+on:
+  issues:
+    types: [opened]
+
+
+jobs:
+  run-test:  # 🧪 Job 名稱（你可以命名為其他用途，例如 run-stock-monitor）
+
+    runs-on: ubuntu-latest  # 🖥 使用 GitHub 提供的 Ubuntu Runner 來執行任務
+
+    steps:  # 🪜 每個步驟依序執行
+      - name: 留言
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "祝你專案進展順利"
+            });
+
