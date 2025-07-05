@@ -66,7 +66,7 @@ jobs:
         with:
           script: |
             github.rest.issues.createComment({
-              issue_number: 123,
+              issue_number: 1,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "✅ 測試完成！[報告下載點](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})"
