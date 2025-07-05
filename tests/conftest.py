@@ -14,13 +14,10 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
-    # 只有在測試失敗或你想加入的階段加入附件
-    
-    extra = getattr(report, "extra", [])
-
     # 🖼️ 總是加圖檔，不限定失敗階段
+    extra = getattr(report, "extra", [])    
     screenshot_path = "reports/ui_screenshot.png"
-    if os.path.exists(screenshot_path):
+    if report.when == "teardown" and os.path.exists(screenshot_path):
         extra.append(pytest_html.extras.image(screenshot_path))
 
     report.extra = extra
