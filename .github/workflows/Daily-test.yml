@@ -58,7 +58,7 @@ jobs:
       - name: 上傳測試報告
         uses: actions/upload-artifact@v4
         with:
-          name: test-report
+          name: test-report-${{ github.run_id }}
           path: reports/test_report_*.html
 
       - name: 留言報告連結
