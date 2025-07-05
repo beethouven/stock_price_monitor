@@ -25,7 +25,9 @@ jobs:
           python-version: '3.10'  # 🐍 設定使用的 Python 版本為 3.10
 
       - name: Install dependencies
-        run: pip install -r requirements.txt  # 📥 安裝套件（你在 requirements.txt 裡定義）
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-html
 
       - name: Run test and generate report
         run: python run_test.py  # 🚀 執行你的主腳本，產生報告與紀錄
