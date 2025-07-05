@@ -55,6 +55,24 @@ jobs:
           body: "請參閱今日測試報告，HTML 檔案已附加。"  # 📄 信件內容
           attachments: ${{ env.REPORT_PATH }}  # 📎 附加報告檔案
 
+      - name: 上傳測試報告
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: reports/test_report_*.html
+
+      - name: 留言報告連結
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: 123,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "✅ 測試完成！[報告下載點](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})"
+            });
+
+
       # 目前不支援 LINE Notify 的直接寄送
       # 如果需要，可以使用 curl 或其他工具來實現
       # - name: Send LINE Notify

@@ -11,7 +11,8 @@ def test_get_stock_price():
 
     page.open(stock_number)
     price = page.get_price()
-
     assert price is not None
+    driver.save_screenshot("reports/ui_screenshot.png")
+
     driver.quit()
     
