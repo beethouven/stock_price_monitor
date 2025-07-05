@@ -7,5 +7,5 @@ def get_price_from_api(stock_id, date = datetime.now().strftime("%Y-%m-%d")):
     response = requests.get(url)
     data = response.json()
     print(data)
-    return float(data['data'][-1]['close'])
+    return float(data['data'][0]['close'])
 

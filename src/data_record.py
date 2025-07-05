@@ -1,9 +1,16 @@
 import json
+import os
 
 def write_json(log_list, filename):
-    with open(filename, "a", encoding="utf-8") as jsonfile:
-        for log in log_list:
-            jsonfile.write(json.dumps(log, ensure_ascii=False) + "\n")
+    folder = os.path.dirname(filename)
+    if folder and not os.path.exists(folder):
+        os.makedirs(folder)  # ✅ 自動建立資料夾
+
+    with open(filename, "a", encoding="utf-8") as f:
+        for item in log_list:
+            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+
+
 
 def read_json(filename):
     try:

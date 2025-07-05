@@ -8,7 +8,7 @@ on:
       - '.github/workflows/*.yml'
 
   schedule:               # 👉 每天早上台灣時間 8:30 自動執行
-    - cron: '30 0 * * *'  # UTC 時間 00:30 = 台灣時間 08:30
+    - cron: '30 0 * * 1-5'  # UTC 時間 00:30 = 台灣時間 08:30
 
 jobs:
   run-test:  # 🧪 Job 名稱（你可以命名為其他用途，例如 run-stock-monitor）
@@ -42,6 +42,7 @@ jobs:
           # 📄 artifact 名稱與路徑，使用環境變數來動態設定
 
       - name: Send report via email
+        continue-on-error: true            # 🔄 如果寄送失敗不會中斷整個工作流程
         uses: dawidd6/action-send-mail@v3  # 📧 使用第三方 mail action 套件寄出報告
         with:
           server_address: smtp.gmail.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
@@ -61,3 +62,25 @@ jobs:
       #     curl -X POST https://notify-api.line.me/api/notify \
       #       -H "Authorization: Bearer ${{ secrets.LINE_NOTIFY_TOKEN }}" \
       #       -F "message=✅ 測試完成！報告已寄出，請查看你的信箱。"  # 🔔 傳送通知訊息到 LINE
+
+      # 接下來完成下面的部分
+      # - name: Telegram fallback if email fails
+      #   if: steps.send_email.outcome != 'success'
+      #   run: |
+      #     curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+      #       -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+      #       -d text="⚠️ Email 發送失敗，已改由 Telegram 通報\n測試報告：${{ env.REPORT_PATH }}"
+
+      # - name: Append result to Google Sheets (via API)
+      #   if: always()
+      #   run: python push_google_sheets.py
+
+      # - name: Always upload report as artifact
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: test-report
+      #     path: ${{ env.REPORT_PATH }}
+
+
+
