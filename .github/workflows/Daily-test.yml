@@ -28,6 +28,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pytest pytest-html
+          pip install Pillow
 
       - name: Run test and generate report
         run: python run_test.py  # 🚀 執行你的主腳本，產生報告與紀錄
