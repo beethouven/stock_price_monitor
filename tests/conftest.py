@@ -18,7 +18,7 @@ def pytest_runtest_makereport(item, call):
     extra = getattr(report, "extra", [])
     if report.when == "call":
         # 只在測試階段添加截圖
-        screenshot_path = "reports/ui_screenshot.png"
+        screenshot_path = "reports/ui_screenshot.jpg"
         if os.path.exists(screenshot_path):
             extra.append(pytest_html.extras.image(screenshot_path))
     
