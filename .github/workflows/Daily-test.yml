@@ -35,8 +35,7 @@ jobs:
 
       - name: Set timestamp variable
         id: vars
-        run: echo "REPORT_PATH=reports/test_report_$(date +'%Y-%m-%d_%H').html" >> $GITHUB_ENV
-             echo "::set-output name=REPORT_PATH::reports/test_report_$(date +'%Y-%m-%d_%H').html"
+        run: echo "::set-output name=REPORT_PATH::reports/test_report_$(date +'%Y-%m-%d_%H').html"
         shell: bash
 
       - name: Upload HTML report as artifact
@@ -52,11 +51,11 @@ jobs:
         with:
           server_address: smtp.gmail.com  # ✉️ SMTP 伺服器地址（例如 Gmail 可用 smtp.gmail.com）
           server_port: 587  # 🔐 通常使用 587 或 465（依服務而定）
-          username: ${{ secrets.EMAIL_USERNAME }}  # 👤 登入帳號（從 Secrets 讀取）
-          password: ${{ secrets.GMAIL_APP_PASSWORD }}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
+          username: ${{ secrets.EMAIL_USERNAME || '未設定 EMAIL_USERNAME'}}  # 👤 登入帳號（從 Secrets 讀取）
+          password: ${{ secrets.GMAIL_APP_PASSWORD || '未設定 GMAIL_APP_PASSWORD'}}  # 🔑 登入密碼（建議用 App Password 或 OAuth Token）
           subject: Daily Test Report  # 📌 信件主題
-          to: ${{ secrets.EMAIL_USERNAME }}  # 📥 收件人信箱
-          from: ${{ secrets.EMAIL_USERNAME }}  # 📤 寄件人信箱（可與 username 一致）
+          to: ${{ secrets.EMAIL_USERNAME || '未設定 EMAIL_USERNAME' }}  # 📥 收件人信箱
+          from: ${{ secrets.EMAIL_USERNAME || '未設定 EMAIL_USERNAME' }}  # 📤 寄件人信箱（可與 username 一致）
           body: "請參閱今日測試報告，HTML 檔案已附加。"  # 📄 信件內容
           attachments: ${{ steps.vars.outputs.REPORT_PATH }}  # 📎 附加報告檔案
 
