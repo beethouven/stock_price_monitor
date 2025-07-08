@@ -36,12 +36,14 @@ jobs:
       - name: Set timestamp variable
         id: vars
         run: echo "REPORT_PATH=reports/test_report_$(date +'%Y-%m-%d_%H').html" >> $GITHUB_ENV
+             echo "::set-output name=REPORT_PATH::reports/test_report_$(date +'%Y-%m-%d_%H').html"
+        shell: bash
 
       - name: Upload HTML report as artifact
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: ${{ env.REPORT_PATH }}
+          path: ${{ steps.vars.outputs.REPORT_PATH }}
           # 📄 artifact 名稱與路徑，使用環境變數來動態設定
 
       - name: Send report via email
@@ -56,7 +58,7 @@ jobs:
           to: ${{ secrets.EMAIL_USERNAME }}  # 📥 收件人信箱
           from: ${{ secrets.EMAIL_USERNAME }}  # 📤 寄件人信箱（可與 username 一致）
           body: "請參閱今日測試報告，HTML 檔案已附加。"  # 📄 信件內容
-          attachments: ${{ env.REPORT_PATH }}  # 📎 附加報告檔案
+          attachments: ${{ steps.vars.outputs.REPORT_PATH }}  # 📎 附加報告檔案
 
       - name: 上傳測試報告
         uses: actions/upload-artifact@v4
