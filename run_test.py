@@ -13,7 +13,9 @@ def get_timestamp_hour():
 def build_pytest_command(args):
     create_report_folder()
     timestamp = get_timestamp_hour()
-    report_file = args.report or f"reports/test_report_{timestamp}.html"
+    timestamp_folder = f"reports/{timestamp}"
+    os.makedirs(timestamp_folder, exist_ok=True)
+    report_file = args.report or os.path.join(timestamp_folder, "report.html")
 
     pytest_args = [
         "--html=" + report_file,

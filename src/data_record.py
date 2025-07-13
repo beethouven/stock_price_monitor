@@ -10,8 +10,6 @@ def write_json(log_list, filename):
         for item in log_list:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
-
-
 def read_json(filename):
     try:
         with open(filename, "r", encoding="utf-8") as jsonfile:

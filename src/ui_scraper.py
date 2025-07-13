@@ -4,8 +4,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import os
-
-
 import platform
 
 def create_chrome_driver():
@@ -24,26 +22,18 @@ def create_chrome_driver():
         if system == "Windows":
             local_driver_path = os.path.join(base_dir, "..", "drivers", "chromedriver.exe")
         elif system == "Linux":
-            local_driver_path = os.path.join(base_dir, "..", "drivers", "chromedriver")  # 無副檔名
-            os.chmod(local_driver_path, 0o755)  # 👈 加執行權限
+            local_driver_path = os.path.join(base_dir, "..", "drivers", "chromedriver")
+            os.chmod(local_driver_path, 0o755)
         else:
             raise RuntimeError(f"不支援的作業系統：{system}")
-
         service = Service(executable_path=local_driver_path)
 
     return webdriver.Chrome(service=service, options=options)
 
+def open_page(driver, url):
+    driver.get(url)
+    driver.set_window_size(1000, 1000)
+    driver.implicitly_wait(10)
 
-
-
-class TSEStockPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.driver.implicitly_wait(10)
-
-    def open(self, symbol):
-        url = f"https://tw.stock.yahoo.com/quote/{symbol}.TW"
-        self.driver.get(url)
-
-    def get_price(self):
-        return self.driver.find_element(By.XPATH, "//*[@id='main-0-QuoteHeader-Proxy']/div/div[2]/div[1]/div/span[1]").text
+def get_element_text(driver, xpath):
+    return driver.find_element(By.XPATH, xpath).text
